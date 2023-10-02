@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FiEyeOff, FiEye } from 'react-icons/fi';
@@ -47,6 +47,14 @@ const Register = () => {
                 const loggedUser = result.user;
                 console.log(loggedUser)
                 setSuccess('Registered 🥰🥰')
+                // email varification
+                sendEmailVerification(loggedUser)
+                .then(() => {
+                    alert('Please check your email👁👁')
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             })
             .catch(error => {
                 console.error(error)
@@ -59,6 +67,8 @@ const Register = () => {
             <div className="mx-auto md:w-1/2">
                 <h3 className="text-3xl">Register</h3>
                 <form className="mt-2" onSubmit={handleRegister}>
+                    <input className="w-full border-gray-700 border-2 rounded-md py-2 px-4 mb-2" required placeholder="Your name" type="text" name="name" id="" />
+                    <br />
                     <input className="w-full border-gray-700 border-2 rounded-md py-2 px-4 mb-2" required placeholder="Email" type="email" name="email" id="" />
                     <br />
                     <div className="relative">
