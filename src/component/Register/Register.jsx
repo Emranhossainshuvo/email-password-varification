@@ -23,7 +23,8 @@ const Register = () => {
 
         const email = e.target.email.value;
         const password = e.target.password.value;
-        console.log(email, password)
+        const termsAndConditions = e.target.terms.checked;
+        console.log(email, password, termsAndConditions)
 
         // password check condition
 
@@ -34,6 +35,10 @@ const Register = () => {
         else if (!/[A-Z]/.test(password)) {
             setRegisterError('Strong password requares at least one uppar case character')
             return;
+        }
+        else if(!termsAndConditions){
+            setRegisterError("please accept our terms and conditions")
+            return; 
         }
 
         createUserWithEmailAndPassword(auth, email, password)
@@ -55,18 +60,25 @@ const Register = () => {
                 <form className="mt-2" onSubmit={handleRegister}>
                     <input className="w-full border-gray-700 border-2 rounded-md py-2 px-4 mb-2" required placeholder="Email" type="email" name="email" id="" />
                     <br />
-                    <input
-                        className="w-full border-gray-700 border-2 rounded-md mb-2 py-2 px-4"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        placeholder="Password"
-                        name="password"
-                        id="" />
-                    <span onClick={() => setShowPassword(!showPassword)}>
-                        {
-                            showPassword ? <FiEyeOff></FiEyeOff> : <FiEye/> 
-                        }
-                    </span>
+                    <div className="relative">
+                        <input
+                            className="w-full border-gray-700 border-2 rounded-md  py-2 px-4"
+                            type={showPassword ? "text" : "password"}
+                            required
+                            placeholder="Password"
+                            name="password"
+                            id="" />
+                        <span className="absolute top-3 right-2" onClick={() => setShowPassword(!showPassword)}>
+                            {
+                                showPassword ? <FiEyeOff></FiEyeOff> : <FiEye />
+                            }
+                        </span>
+                    </div>
+                    <br />
+                    <div className="mb-1">
+                        <input type="checkbox" name="terms" id="terms" />
+                        <label className="ms-2" htmlFor="terms">Accept out <a href="">terms and conditions</a></label>
+                    </div>
                     <br />
                     <input className="w-full btn btn-neutral" type="submit" value="Submit" />
                 </form>
