@@ -1,24 +1,39 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 const Login = () => {
 
-    
+
+
+    const [showError, setShowError] = useState('');
+
+    const [success, setSuccess] = useState('');
+
+
+
 
     const handleLogin = e => {
         e.preventDefault()
-        const email = e.target.email.value; 
-        const password = e.target.password.value; 
+        // reset
+        setShowError('');
+        setSuccess('');
+        // reset
+        const email = e.target.email.value;
+        const password = e.target.password.value;
         console.log(email, password)
         // 
         signInWithEmailAndPassword(auth, email, password)
-        .then(result => {
-            console.log(result.user)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .then(result => {
+                console.log(result.user)
+                setSuccess('You have loged in')
+            })
+            .catch(error => {
+                console.log(error)
+                setShowError(error.message)
+            })
     }
 
     return (
@@ -49,6 +64,13 @@ const Login = () => {
                             <button className="btn btn-primary">Login</button>
                         </div>
                     </form>
+                    {
+                        showError && <p className="text-red-700 mb-2 text-xl ms-4 font-semibold">{showError}</p>
+                    }
+                    {
+                        success && <p className="text-green-700 mb-2 text-xl ms-4 font-semibold">{success}</p>
+                    }
+                    <p>New to Vocal Cove? Please <Link to="/register">register</Link></p>
                 </div>
             </div>
         </div>
